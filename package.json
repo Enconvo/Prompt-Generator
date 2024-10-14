@@ -1,0 +1,82 @@
+{
+  "$schema": "https://enconvo.com/schemas/extension.json",
+  "name": "writing_package",
+  "version": "0.0.1",
+  "description": "Prompt Generator",
+  "title": "Prompt Generator",
+  "icon": "icon.png",
+  "author": "EnconvoAI",
+  "license": "MIT",
+  "type": "module",
+  "minAppVersion": "1.8.8",
+  "categories": [
+    "Writing"
+  ],
+  "commands": [
+    {
+      "name": "prompt_generator_openai",
+      "title": "Prompt Generator (OpenAI)",
+      "description": "Generate a prompt using OpenAI [Meta-Prompt](https://platform.openai.com/docs/guides/prompt-generation?context=text-out)",
+      "icon": "prompt_generator_openai.png",
+      "mode": "no-view",
+      "accepts": [
+        "text"
+      ],
+      "aiPlugin": true,
+      "params": [
+        {
+          "name": "text",
+          "description": "The text to be used ",
+          "type": "string",
+          "required": true,
+          "default": ""
+        }
+      ],
+      "preferences": [
+        {
+          "name": "auto_audio_play",
+          "description": "Automatically play result content",
+          "type": "checkbox",
+          "required": false,
+          "title": "Automatically Play TTS Audio",
+          "default": false
+        },
+        {
+          "name": "tts_providers",
+          "description": "The TTS provider to use.",
+          "type": "extension",
+          "required": false,
+          "default": "default",
+          "title": "TTS Provider"
+        },
+        {
+          "name": "llm",
+          "description": "The model used to generate responses",
+          "type": "extension",
+          "required": false,
+          "default": "default",
+          "title": "LLM Model"
+        }
+      ]
+    }
+  ],
+  "dependencies": {
+    "@enconvo/api": "^0.1.128",
+    "@langchain/core": "^0.3.9"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.33",
+    "eslint": "^8.57.0",
+    "prettier": "^2.8.8",
+    "tsup": "^7.2.0",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "npm run lint --fix",
+    "format": "prettier --write \"**/*.ts\"",
+    "format:check": "prettier --list-different \"**/*.ts\"",
+    "build": "enconvo",
+    "dev": "enconvo --dev"
+  }
+}
