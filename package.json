@@ -1,6 +1,6 @@
 {
   "$schema": "https://enconvo.com/schemas/extension.json",
-  "name": "writing_package",
+  "name": "prompt_generator",
   "version": "0.0.1",
   "description": "Prompt Generator",
   "title": "Prompt Generator",
