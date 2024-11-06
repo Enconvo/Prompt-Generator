@@ -8,9 +8,9 @@ const chatHistory = new CoreDataChatHistory();
 
 export default async function main(req: Request) {
     const { options } = await req.json();
-    const { text, context, reset, clean_result } = options;
+    const { input_text, selection_text, context, reset, clean_result } = options;
 
-    let inputMessage = text || context;
+    let inputMessage = input_text || selection_text || context;
 
 
     if (!inputMessage) {
@@ -20,18 +20,7 @@ export default async function main(req: Request) {
     const requestId = uuidv4()
 
     reset && chatHistory.reset();
-    // const historyMessages = await chatHistory.getMessages()
     let messages: BaseMessage[] = [];
-    // const hasMessages = historyMessages.length > 0
-
-    // if (hasMessages) {
-    //     messages = [
-    //         new SystemMessage(`Your are a bot named ${environment.commandTitle}, your prompt is "${promptMessage}",please respond based on the user's latest input. `),
-    //         ...historyMessages,
-    //         new HumanMessage(message)
-    //     ]
-
-    // } else {
 
     const userMessage = `Task, Goal, or Current Prompt:\n${inputMessage}`;
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://enconvo.com/schemas/extension.json",
   "name": "prompt_generator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Prompt Generator",
   "title": "Prompt Generator",
   "icon": "icon.png",
@@ -15,7 +15,7 @@
   "commands": [
     {
       "name": "prompt_generator_openai",
-      "title": "Prompt Generator (OpenAI)",
+      "title": "Prompt Generator",
       "description": "Generate a prompt using OpenAI [Meta-Prompt](https://platform.openai.com/docs/guides/prompt-generation?context=text-out)",
       "icon": "prompt_generator_openai.png",
       "mode": "no-view",
@@ -23,15 +23,16 @@
         "text"
       ],
       "aiPlugin": true,
-      "params": [
-        {
-          "name": "text",
-          "description": "The text to be used ",
+      "parameters": {
+        "input_text": {
           "type": "string",
-          "required": true,
-          "default": ""
+          "description": "The text to fix spelling and grammar"
+        },
+        "selection_text": {
+          "type": "string",
+          "description": "The selected text to fix spelling and grammar"
         }
-      ],
+      },
       "preferences": [
         {
           "name": "auto_audio_play",
