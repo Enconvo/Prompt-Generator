@@ -7,7 +7,6 @@ export default async function main(req: Request): Promise<EnconvoResponse> {
 
     let inputMessage = input_text || selection_text || context;
 
-
     if (!inputMessage) {
         throw new Error("No text to be processed")
     }

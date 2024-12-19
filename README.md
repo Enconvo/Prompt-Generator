@@ -9,7 +9,7 @@ A powerful prompt generator extension for EnconvoAI that helps improve your writ
 
 ## Description
 
-This package provides a set of AI-powered prompts for writing and editing text, helping you create better content effortlessly.
+A powerful prompt generator extension.
 
 ## Requirements
 
