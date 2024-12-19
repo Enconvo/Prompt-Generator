@@ -1,14 +1,9 @@
-
-import { uuid as uuidv4, ServiceProvider, ChatHistory, ActionProps, Action, LLMUtil, LLMProviderBase, Command, environment, CoreDataChatHistory } from "@enconvo/api";
-import { BaseMessage, HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { Action, Command, environment, BaseChatMessage, SystemMessage, UserMessage, RequestOptions, LLMProvider, ResponseAction, EnconvoResponse } from "@enconvo/api";
 import { openai_meta_prompt as prompt } from "./prompts.ts";
 
-
-const chatHistory = new CoreDataChatHistory();
-
-export default async function main(req: Request) {
-    const { options } = await req.json();
-    const { input_text, selection_text, context, reset, clean_result } = options;
+export default async function main(req: Request): Promise<EnconvoResponse> {
+    const options: RequestOptions = await req.json();
+    const { input_text, selection_text, context } = options;
 
     let inputMessage = input_text || selection_text || context;
 
@@ -17,45 +12,32 @@ export default async function main(req: Request) {
         throw new Error("No text to be processed")
     }
 
-    const requestId = uuidv4()
-
-    reset && chatHistory.reset();
-    let messages: BaseMessage[] = [];
+    let messages: BaseChatMessage[] = [];
 
     const userMessage = `Task, Goal, or Current Prompt:\n${inputMessage}`;
 
-
     messages = [
         new SystemMessage(prompt),
-        new HumanMessage(userMessage),
+        new UserMessage(userMessage),
     ];
-    // }
+    const llmProvider = await LLMProvider.fromEnv()
+    const resultMessage = await llmProvider.stream({ messages, autoHandle: true })
 
-    let chat: LLMProviderBase = ServiceProvider.load(options.llm)
-    const stream = (await chat.call({ messages })).stream!
-    const result = await LLMUtil.invokeLLMStream(stream, options)
+    const result = resultMessage.text()
 
 
-    await ChatHistory.saveChatMessages({
-        input: inputMessage,
-        output: result,
-        llmOptions: options.llm,
-        requestId
-    });
-
-    const actions: ActionProps[] = [
+    const actions: ResponseAction[] = [
         Action.Paste({ content: result }),
         Action.InsertBelow({ content: result }),
         Action.Copy({ content: result })
     ]
 
-    const output = {
-        content: result,
-        actions: actions
-    }
-
     Command.setDefaultCommandKey(`${environment.extensionName}|${environment.commandName}`).then()
 
-    return output;
+    return {
+        type: "text",
+        content: result,
+        actions: actions
+    };
 }
 
