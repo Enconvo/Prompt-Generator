@@ -1,7 +1,7 @@
 {
   "$schema": "https://enconvo.com/schemas/extension.json",
   "name": "prompt_generator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Prompt Generator",
   "title": "Prompt Generator",
   "icon": "icon.png",
@@ -21,13 +21,16 @@
       "mode": "no-view",
       "aiPlugin": true,
       "parameters": {
-        "input_text": {
-          "type": "string",
-          "description": "The text to fix spelling and grammar"
-        },
-        "selection_text": {
-          "type": "string",
-          "description": "The selected text to fix spelling and grammar"
+        "type": "object",
+        "properties": {
+          "input_text": {
+            "type": "string",
+            "description": "The text to fix spelling and grammar"
+          },
+          "selection_text": {
+            "type": "string",
+            "description": "The selected text to fix spelling and grammar"
+          }
         }
       },
       "preferences": [
@@ -59,7 +62,7 @@
     }
   ],
   "dependencies": {
-    "@enconvo/api": "^0.1.151"
+    "@enconvo/api": "^0.1.161"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
