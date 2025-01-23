@@ -1,7 +1,7 @@
-import { Action, Command, environment, BaseChatMessage, SystemMessage, UserMessage, RequestOptions, LLMProvider, ResponseAction, EnconvoResponse } from "@enconvo/api";
+import { Action, BaseChatMessage, SystemMessage, UserMessage, RequestOptions, LLMProvider, ResponseAction, Response } from "@enconvo/api";
 import { openai_meta_prompt as prompt } from "./prompts.ts";
 
-export default async function main(req: Request): Promise<EnconvoResponse> {
+export default async function main(req: Request): Promise<Response> {
     const options: RequestOptions = await req.json();
     const { input_text, selection_text, context } = options;
 
@@ -20,7 +20,7 @@ export default async function main(req: Request): Promise<EnconvoResponse> {
         new UserMessage(userMessage),
     ];
     const llmProvider = await LLMProvider.fromEnv()
-    const resultMessage = await llmProvider.stream({ messages, autoHandle: true })
+    const resultMessage = await llmProvider.stream({ messages })
 
     const result = resultMessage.text()
 
@@ -31,12 +31,6 @@ export default async function main(req: Request): Promise<EnconvoResponse> {
         Action.Copy({ content: result })
     ]
 
-    Command.setDefaultCommandKey(`${environment.extensionName}|${environment.commandName}`).then()
-
-    return {
-        type: "text",
-        content: result,
-        actions: actions
-    };
+    return Response.messages([resultMessage], actions)
 }
 
